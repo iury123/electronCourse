@@ -27,7 +27,8 @@ let altWindow
 
 // Instead to use menu object, use templates which are json objects.
 
-let mainMenu = Menu.buildFromTemplate(require('./mainMenu'))
+let mainMenu = Menu.buildFromTemplate(require('./mainMenu.js'))
+let contextMenu = Menu.buildFromTemplate(require('./contextMenu.js'))
 
 
 
@@ -86,6 +87,12 @@ function createWindow() {
     // webPreferences: { partition: 'partition1' }
   })
   winState.manage(mainWindow)
+
+  mainWindow.webContents.on('context-menu', (e) => {
+    e.preventDefault()
+    contextMenu.popup()
+  })
+
 
   // Cleans the session, including local storage.
   // mainSession.clearStorageData()
