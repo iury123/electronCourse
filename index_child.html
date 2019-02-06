@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Child Window</title>
+    <style media="screen">
+        * {
+            cursor: default;
+        }
+        body {
+          height: 100%;
+          background-color: green;
+          -webkit-user-select: none;
+          -webkit-app-region: drag;
+        }
+        select {
+            -webkit-app-region: no-drag;
+        }
+    </style>
+  </head>
+  <body>
+    <select class="" name="">
+        <option value="option">Option 1</option>
+        <option value="option">Option 2</option>
+        <option value="option">Option 3</option>
+    </select>
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+  </body>
+</html>
