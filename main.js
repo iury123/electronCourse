@@ -37,7 +37,7 @@ function createWindow() {
   })
   winState.manage(mainWindow)
 
-  //Cleans the session, including local storage.
+  // Cleans the session, including local storage.
   // mainSession.clearStorageData()
 
   // altWindow = new BrowserWindow({ width: 700, height: 700 })
@@ -63,6 +63,9 @@ function createWindow() {
 
   // console.log(Object.is(mainSession, appSession))
 
+
+  //COOKIES
+
   mainSession.cookies.get({name: 'cookie1'}, (error, cookies) => {
     console.log(cookies)
   })
@@ -79,6 +82,35 @@ function createWindow() {
   //     console.log(cookies)
   //   })
   // })
+
+  //DOWNLOADS
+
+  mainSession.on('will-download', (e, downloadItem, webContents) => {
+    let fileName = downloadItem.getFilename()
+    downloadItem.setSavePath('downloads/'+fileName)
+
+    let size = downloadItem.getTotalBytes()
+
+    downloadItem.on('updated', (e, state) => {
+      let progress = Math.round((downloadItem.getReceivedBytes() / size) * 100)
+      if(state === 'progressing') {
+       process.stdout.clearLine()
+       process.stdout.cursorTo(0)
+       process.stdout.write('Download progress: '+progress + '%')
+      }
+    })
+
+
+    downloadItem.once('done', (e, state) => {
+      if(state === 'completed') {
+        process.stdout.write('\n')
+        process.stdout.write('Download Completed.')
+      }
+    })
+
+  })
+
+
 
 
 
@@ -132,7 +164,7 @@ function createWindow() {
   // })
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
   // altWindow.webContents.openDevTools()
 
   // secWindow.on('focus', () => {
