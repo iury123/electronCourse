@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, session } = require('electron')
+const { app, BrowserWindow, session, dialog, globalShortcut,
+  Menu, MenuItem } = require('electron')
 const windowStateKeeper = require('electron-window-state')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -7,11 +8,58 @@ let mainWindow
 let childWindow
 let secWindow
 let altWindow
+// The classic way of doing menu.
+// let mainMenu = new Menu()
+
+// let menuItem1 = new MenuItem({
+//   label: 'Electron',
+//   submenu: [
+//     {
+//       label: 'Item 1',
+//       submenu: [
+//         { label: 'Subitem 1-1' }
+//       ]
+//     },
+//     { label: 'Item 2' }
+//   ]
+// })
+// mainMenu.append(menuItem1)
+
+// Instead to use menu object, use templates which are json objects.
+
+let mainMenu = Menu.buildFromTemplate(require('./mainMenu'))
+
+
 
 //Callback which is run when any browser window comes into focus.
 app.on('browser-window-focus', () => {
   console.log('app focused')
 })
+
+
+function showDialog() {
+  // dialog.showOpenDialog({ defaultPath: '/home/iurydarocha/Documentos',
+  //  buttonLabel: 'Select NOW!!!!', properties: ['openFile', 'multiSelections', 'createDirectory']},
+  //   (openPath) => {
+  //     console.log(openPath);
+  //   })
+
+  // dialog.showSaveDialog({defaultPath: '/home/iurydarocha/Área\ de\ Trabalho/'}, (fileName) => {
+  //   console.log(fileName);
+  // })
+
+  const buttons = ['Yes', 'No', 'Maybe']
+
+  dialog.showMessageBox({
+    buttons, title: 'Electron Message Dialog', message: 'Please select a answer',
+    detail: 'BLa bla bla'
+  }, (buttonIndex) => {
+    console.log(`User selected ${buttons[buttonIndex]}`);
+  })
+
+
+}
+
 
 
 function createWindow() {
@@ -23,6 +71,8 @@ function createWindow() {
   // Session from new partition. 'persist:' before the name of partition is to persist the session.
   // let appSession = session.fromPartition('persist:partition1')
 
+
+  // WINDOW STATE KEEPER ------------------------------------------------------------------
 
   let winState = windowStateKeeper({
     defaultWidth: 1200,
@@ -55,6 +105,8 @@ function createWindow() {
   mainWindow.loadFile('index.html')
   // altWindow.loadFile('about.html')
 
+  setTimeout(showDialog, 2000)
+
   let mainContents = mainWindow.webContents
   let mainSession = mainWindow.webContents.session
 
@@ -64,11 +116,11 @@ function createWindow() {
   // console.log(Object.is(mainSession, appSession))
 
 
-  //COOKIES
+  // COOKIES ------------------------------------------------------------------
 
-  mainSession.cookies.get({name: 'cookie1'}, (error, cookies) => {
-    console.log(cookies)
-  })
+  // mainSession.cookies.get({ name: 'cookie1' }, (error, cookies) => {
+  //   console.log(cookies)
+  // })
 
   // expirationDate is to save your cookie after restart the app. Without it, the cookie is destroyed.
 
@@ -83,36 +135,41 @@ function createWindow() {
   //   })
   // })
 
-  //DOWNLOADS
+  // DOWNLOADS --------------------------------------------------------------------
 
-  mainSession.on('will-download', (e, downloadItem, webContents) => {
-    let fileName = downloadItem.getFilename()
-    downloadItem.setSavePath('downloads/'+fileName)
+  // mainSession.on('will-download', (e, downloadItem, webContents) => {
+  //   let fileName = downloadItem.getFilename()
+  //   downloadItem.setSavePath('downloads/' + fileName)
 
-    let size = downloadItem.getTotalBytes()
+  //   let size = downloadItem.getTotalBytes()
 
-    downloadItem.on('updated', (e, state) => {
-      let progress = Math.round((downloadItem.getReceivedBytes() / size) * 100)
-      if(state === 'progressing') {
-       process.stdout.clearLine()
-       process.stdout.cursorTo(0)
-       process.stdout.write('Download progress: '+progress + '%')
-      }
-    })
+  //   downloadItem.on('updated', (e, state) => {
+  //     let progress = Math.round((downloadItem.getReceivedBytes() / size) * 100)
+  //     if (state === 'progressing') {
+  //       process.stdout.clearLine()
+  //       process.stdout.cursorTo(0)
+  //       process.stdout.write('Download progress: ' + progress + '%')
+  //     }
+  //   })
 
 
-    downloadItem.once('done', (e, state) => {
-      if(state === 'completed') {
-        process.stdout.write('\n')
-        process.stdout.write('Download Completed.')
-      }
-    })
+  //   downloadItem.once('done', (e, state) => {
+  //     if (state === 'completed') {
+  //       process.stdout.write('\n')
+  //       process.stdout.write('Download Completed.')
+  //     }
+  //   })
+
+  // })
+
+
+  // GLOBAL SHORTCUTS ---------------------------------------------------------------------
+  globalShortcut.register('CommandOrControl+g', () => {
+    console.log('User pressed "g" with CMD/CTRL modifier');
 
   })
 
-
-
-
+  // WEBCONTENTS -------------------------------------------------------------------------
 
   // mainContents.on('did-finish-load', () => {
   //   console.log('Google.com loaded')
@@ -205,7 +262,10 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+  Menu.setApplicationMenu(mainMenu)
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
