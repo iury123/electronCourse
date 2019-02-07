@@ -13,7 +13,15 @@ let altWindow
 
 // IPC MAIN -------------------------------------------------------------------------------
 
+ipcMain.on('channel1', (event, args) => {
+  console.log('main.js',`${args.name} ${args.surname} arrived at main.js`);
+  event.sender.send('channel1', 'Message received on main process')
+})
 
+ipcMain.on('sync-channel', (event, args) => {
+  console.log('Sync message recieved:', args);
+  event.returnValue = 'A synchronous response from main process.'
+})
 
 
 
@@ -115,6 +123,11 @@ function createWindow() {
   mainWindow.webContents.on('context-menu', (e) => {
     e.preventDefault()
     contextMenu.popup()
+  })
+
+  // IPC - Send from main.js to renderer.js ---------------------------------------------------------------------
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.send('private', 'Message from Main Process to Main window')
   })
 
 
