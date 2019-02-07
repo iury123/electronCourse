@@ -1,14 +1,23 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, session, dialog, globalShortcut,
-  Menu, MenuItem } = require('electron')
+  Menu, MenuItem, Tray, ipcMain } = require('electron')
 const windowStateKeeper = require('electron-window-state')
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow, tray
 let childWindow
 let secWindow
 let altWindow
-// The classic way of doing menu.
+
+
+// IPC MAIN -------------------------------------------------------------------------------
+
+
+
+
+
+// MENU - The classic way of doing menu. ---------------------------------------------------
 // let mainMenu = new Menu()
 
 // let menuItem1 = new MenuItem({
@@ -26,18 +35,35 @@ let altWindow
 // mainMenu.append(menuItem1)
 
 // Instead to use menu object, use templates which are json objects.
-
 let mainMenu = Menu.buildFromTemplate(require('./mainMenu.js'))
 let contextMenu = Menu.buildFromTemplate(require('./contextMenu.js'))
 
 
+// TRAY -----------------------------------------------------------------------------
+function createTray() {
+  tray = new Tray('icon.png')
+  tray.setToolTip('My Electron App')
+
+  const trayMenu = Menu.buildFromTemplate([
+    {label: 'Tray Menu Item'},
+    {role: 'quit'}
+  ])
+
+  // tray.setContextMenu(trayMenu)
+
+  tray.on('click', () => {
+    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
+    console.log('user clicked on tray');
+    
+  })
+}
 
 //Callback which is run when any browser window comes into focus.
 app.on('browser-window-focus', () => {
   console.log('app focused')
 })
 
-
+// DIALOGS -------------------------------------------------------------------------------------
 function showDialog() {
   // dialog.showOpenDialog({ defaultPath: '/home/iurydarocha/Documentos',
   //  buttonLabel: 'Select NOW!!!!', properties: ['openFile', 'multiSelections', 'createDirectory']},
@@ -57,8 +83,6 @@ function showDialog() {
   }, (buttonIndex) => {
     console.log(`User selected ${buttons[buttonIndex]}`);
   })
-
-
 }
 
 
@@ -99,7 +123,6 @@ function createWindow() {
 
   // altWindow = new BrowserWindow({ width: 700, height: 700 })
 
-
   // childWindow = new BrowserWindow({
   //   width: 800, height: 400,
   //   minWidth: 400, minHeight: 200,
@@ -112,9 +135,12 @@ function createWindow() {
   mainWindow.loadFile('index.html')
   // altWindow.loadFile('about.html')
 
-  setTimeout(showDialog, 2000)
+  // setTimeout(showDialog, 2000)
 
   let mainContents = mainWindow.webContents
+
+  // SESSION ----------------------------------------------------------------------------
+
   let mainSession = mainWindow.webContents.session
 
   // let altSession = altWindow.webContents.session
@@ -123,7 +149,7 @@ function createWindow() {
   // console.log(Object.is(mainSession, appSession))
 
 
-  // COOKIES ------------------------------------------------------------------
+  // COOKIES -----------------------------------------------------------------------------
 
   // mainSession.cookies.get({ name: 'cookie1' }, (error, cookies) => {
   //   console.log(cookies)
@@ -169,11 +195,9 @@ function createWindow() {
 
   // })
 
-
   // GLOBAL SHORTCUTS ---------------------------------------------------------------------
   globalShortcut.register('CommandOrControl+g', () => {
     console.log('User pressed "g" with CMD/CTRL modifier');
-
   })
 
   // WEBCONTENTS -------------------------------------------------------------------------
@@ -254,16 +278,12 @@ function createWindow() {
   // })
 
   // childWindow.on('closed', function () {
-  //   // Dereference the window object, usually you would store windows
-  //   // in an array if your app supports multi windows, this is the time
-  //   // when you should delete the corresponding element.
   //   childWindow = null
   // })
 
   // secWindow.on('closed', () => {
   //   secWindow = null
   // })
-
 }
 
 // This method will be called when Electron has finished
@@ -271,6 +291,7 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
+  createTray()
   Menu.setApplicationMenu(mainMenu)
 })
 
