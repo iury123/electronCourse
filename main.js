@@ -10,6 +10,8 @@ let childWindow
 let secWindow
 let altWindow
 
+// GLOBAL ----------------------------------------------------------------------------------
+global['app_version'] = 1.1
 
 // IPC MAIN -------------------------------------------------------------------------------
 
@@ -109,7 +111,7 @@ function createWindow() {
 
   let winState = windowStateKeeper({
     defaultWidth: 1200,
-    defaultHeight: 600,
+    defaultHeight: 800,
   })
 
   mainWindow = new BrowserWindow({

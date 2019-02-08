@@ -1,32 +1,61 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <style media="screen">
-        body {
-          height: 100%;
-          background-color: red;
-        }
-    </style>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <h3><a href="https://www.google.com/" target="_blank">GOOGLE</a></h3>
-    <h3><a href="http://auth.localhost">HOME</a></h3>
-    <h3><a href="https://drive.google.com/uc?export=download&id=0Bw8HgOhf0Mg5bVdOZWVfcE5qb1E">DOWNLOAD HERE!</a></h3>
-    
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
 
-    <textarea name="name" rows="8" cols="40"></textarea>
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <style media="screen">
+    body {
+      height: 100%;
+      background-color: red;
+    }
+
+    a {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Hello World!</h1>
+  <h3><a onclick="openWin()" target="_blank">Open Google.com</a></h3>
+  <h3><a onclick="closeWin()" target="_blank">Close Google.com</a></h3>
+  <h3><a onclick="alert_win('An alert initiated by main window')" target="_blank">Alert on Google.com</a></h3>
+  <!-- <h3><a href="https://www.google.com/" target="_blank">GOOGLE</a></h3> -->
+  <h3><a href="http://auth.localhost">HOME</a></h3>
+  <h3><a href="https://drive.google.com/uc?export=download&id=0Bw8HgOhf0Mg5bVdOZWVfcE5qb1E">DOWNLOAD HERE!</a></h3>
+
+  <!-- All of the Node.js APIs are available in this renderer process. -->
+  We are using Node.js
+  <script>document.write(process.versions.node)</script>,
+  Chromium
+  <script>document.write(process.versions.chrome)</script>,
+  and Electron
+  <script>document.write(process.versions.electron)</script>.
+
+  <textarea name="name" rows="8" cols="40"></textarea>
 
 
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
-    </script>
-  </body>
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js')
+
+    let win
+
+    const openWin = () => {
+      win = window.open('https://www.google.com/', "Google Window",
+        'resizable=no,width=950')
+    }
+
+    const closeWin = () => {
+      win.close()
+    }
+
+    const alert_win = (msg) => {
+      win.eval(`alert('${msg}')`)
+    }
+  </script>
+</body>
+
 </html>
