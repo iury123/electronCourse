@@ -18,6 +18,16 @@
 </head>
 
 <body>
+  
+  <img src="htpp://placehold.it/200x150" alt=""/>
+  <hr>
+  <button id="zoom_up">Increase Zoom</button>
+  <button id="zoom_down">Decrease Zoom</button>
+  <button id="zoom_reset">Reset Zoom</button>
+
+
+  <br>
+
   <h1>Hello World!</h1>
   <h3><a onclick="openWin()" target="_blank">Open Google.com</a></h3>
   <h3><a onclick="closeWin()" target="_blank">Close Google.com</a></h3>
@@ -41,6 +51,7 @@
     // You can also require other files to run in this process
     require('./renderer.js')
 
+    //Browser window proxies ------------------------------------------------------------------------------
     let win
 
     const openWin = () => {
@@ -55,6 +66,25 @@
     const alert_win = (msg) => {
       win.eval(`alert('${msg}')`)
     }
+
+    // WEB FRAME --------------------------------------------------------------------------------------
+
+    const {webFrame} = require('electron')
+
+    let zoom = 0
+
+    document.getElementById('zoom_up').addEventListener('click',() => {
+      webFrame.setZoomLevel(++zoom)
+    })
+
+    document.getElementById('zoom_down').addEventListener('click', () => {
+      webFrame.setZoomLevel(--zoom)
+    })
+
+    document.getElementById('zoom_down').addEventListener('click', () => {
+      webFrame.setZoomLevel(0)
+    })
+
   </script>
 </body>
 
