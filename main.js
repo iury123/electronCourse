@@ -267,7 +267,7 @@ function createWindow() {
   // })
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
   // altWindow.webContents.openDevTools()
 
   // secWindow.on('focus', () => {

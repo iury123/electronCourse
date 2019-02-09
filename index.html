@@ -14,15 +14,15 @@
       cursor: pointer;
     }
     webview {
-      height: 100px;
+      height: 300px;
       border: 1px solid black
     }
   </style>
 </head>
 
 <body>
-  
-  <img src="http://placehold.it/200x150" alt=""/>
+
+  <img src="http://placehold.it/200x150" alt="" />
   <hr>
   <button id="zoom_up">Increase Zoom</button>
   <button id="zoom_down">Decrease Zoom</button>
@@ -38,7 +38,16 @@
   <h3><a href="http://auth.localhost">HOME</a></h3>
   <h3><a href="https://drive.google.com/uc?export=download&id=0Bw8HgOhf0Mg5bVdOZWVfcE5qb1E">DOWNLOAD HERE!</a></h3>
 
-  <webview src="page1.html"></webview>
+  <webview id="webview1" src="page1.html"></webview>
+  <br>
+  <input id="url" type="text" placeholder="URL to load">
+  <button id="loadURL">Load URL</button>
+  <br><br>
+
+  <h4 id="currentUrl"></h4>
+
+  <br><br><br>
+
   <!-- All of the Node.js APIs are available in this renderer process. -->
   We are using Node.js
   <script>document.write(process.versions.node)</script>,
@@ -74,11 +83,11 @@
 
     // WEB FRAME --------------------------------------------------------------------------------------
 
-    const {webFrame} = require('electron')
+    const { webFrame } = require('electron')
 
     let zoom = 0
 
-    document.getElementById('zoom_up').addEventListener('click',() => {
+    document.getElementById('zoom_up').addEventListener('click', () => {
       webFrame.setZoomLevel(++zoom)
     })
 
@@ -97,6 +106,28 @@
     console.log(webFrame.getResourceUsage());
 
     //WEBVIEW ---------------------------------------------------------------------------
+    const webView = document.getElementById('webview1')
+
+    webView.addEventListener('did-start-loading', () => {
+      console.log('started loading webframe');
+    })
+
+    webView.addEventListener('did-stop-loading', () => {
+      console.log('stoped loading webframe');
+      webView.insertCSS('body{background:orange !important}')
+    })
+
+    const url = document.getElementById('url')
+
+    document.getElementById('loadURL').addEventListener('click', () => {
+      webView.loadURL(url.value)
+    })
+
+    const currentUrl = document.getElementById('currentUrl')
+
+    webView.addEventListener('did-navigate', (e) => {
+      currentUrl.innerHTML = e.url
+    })
   </script>
 </body>
 
