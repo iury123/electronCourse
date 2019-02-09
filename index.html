@@ -31,14 +31,14 @@
   <br>
 
   <h1>Hello World!</h1>
-  <h3><a onclick="openWin()" target="_blank">Open Google.com</a></h3>
+  <!-- <h3><a onclick="openWin()" target="_blank">Open Google.com</a></h3>
   <h3><a onclick="closeWin()" target="_blank">Close Google.com</a></h3>
-  <h3><a onclick="alert_win('An alert initiated by main window')" target="_blank">Alert on Google.com</a></h3>
+  <h3><a onclick="alert_win('An alert initiated by main window')" target="_blank">Alert on Google.com</a></h3> -->
   <!-- <h3><a href="https://www.google.com/" target="_blank">GOOGLE</a></h3> -->
-  <h3><a href="http://auth.localhost">HOME</a></h3>
-  <h3><a href="https://drive.google.com/uc?export=download&id=0Bw8HgOhf0Mg5bVdOZWVfcE5qb1E">DOWNLOAD HERE!</a></h3>
+  <!-- <h3><a href="http://auth.localhost">HOME</a></h3>
+  <h3><a href="https://drive.google.com/uc?export=download&id=0Bw8HgOhf0Mg5bVdOZWVfcE5qb1E">DOWNLOAD HERE!</a></h3> -->
 
-  <webview id="webview1" src="page1.html"></webview>
+  <!-- <webview id="webview1" src="page1.html"></webview>
   <br>
   <input id="url" type="text" placeholder="URL to load">
   <button id="loadURL">Load URL</button>
@@ -46,17 +46,7 @@
 
   <h4 id="currentUrl"></h4>
 
-  <br><br><br>
-
-  <!-- All of the Node.js APIs are available in this renderer process. -->
-  We are using Node.js
-  <script>document.write(process.versions.node)</script>,
-  Chromium
-  <script>document.write(process.versions.chrome)</script>,
-  and Electron
-  <script>document.write(process.versions.electron)</script>.
-
-  <br>
+  <br><br><br> -->
 
   <textarea id="code" name="name" rows="10" cols="50"></textarea>
   <button id="run_js">Run Js</button>
@@ -66,68 +56,68 @@
     require('./renderer.js')
 
     //Browser window proxies ------------------------------------------------------------------------------
-    let win
+    // let win
 
-    const openWin = () => {
-      win = window.open('https://www.google.com/', "Google Window",
-        'resizable=no,width=950')
-    }
+    // const openWin = () => {
+    //   win = window.open('https://www.google.com/', "Google Window",
+    //     'resizable=no,width=950')
+    // }
 
-    const closeWin = () => {
-      win.close()
-    }
+    // const closeWin = () => {
+    //   win.close()
+    // }
 
-    const alert_win = (msg) => {
-      win.eval(`alert('${msg}')`)
-    }
+    // const alert_win = (msg) => {
+    //   win.eval(`alert('${msg}')`)
+    // }
 
     // WEB FRAME --------------------------------------------------------------------------------------
 
     const { webFrame } = require('electron')
 
-    let zoom = 0
+    // let zoom = 0
 
-    document.getElementById('zoom_up').addEventListener('click', () => {
-      webFrame.setZoomLevel(++zoom)
-    })
+    // document.getElementById('zoom_up').addEventListener('click', () => {
+    //   webFrame.setZoomLevel(++zoom)
+    // })
 
-    document.getElementById('zoom_down').addEventListener('click', () => {
-      webFrame.setZoomLevel(--zoom)
-    })
+    // document.getElementById('zoom_down').addEventListener('click', () => {
+    //   webFrame.setZoomLevel(--zoom)
+    // })
 
-    document.getElementById('zoom_reset').addEventListener('click', () => {
-      webFrame.setZoomLevel(zoom = 0)
-    })
+    // document.getElementById('zoom_reset').addEventListener('click', () => {
+    //   webFrame.setZoomLevel(zoom = 0)
+    // })
 
-    document.getElementById('run_js').addEventListener('click', () => {
-      let code = document.getElementById("code").value
-      webFrame.executeJavaScript(code)
-    })
-    console.log(webFrame.getResourceUsage());
+    // document.getElementById('run_js').addEventListener('click', () => {
+    //   let code = document.getElementById("code").value
+    //   webFrame.executeJavaScript(code)
+    // })
+    // console.log(webFrame.getResourceUsage());
 
     //WEBVIEW ---------------------------------------------------------------------------
-    const webView = document.getElementById('webview1')
+    // const webView = document.getElementById('webview1')
 
-    webView.addEventListener('did-start-loading', () => {
-      console.log('started loading webframe');
-    })
+    // webView.addEventListener('did-start-loading', () => {
+    //   console.log('started loading webframe');
+    // })
 
-    webView.addEventListener('did-stop-loading', () => {
-      console.log('stoped loading webframe');
-      webView.insertCSS('body{background:orange !important}')
-    })
+    // webView.addEventListener('did-stop-loading', () => {
+    //   console.log('stoped loading webframe');
+    //   webView.insertCSS('body{background:orange !important}')
+    // })
 
-    const url = document.getElementById('url')
+    // const url = document.getElementById('url')
 
-    document.getElementById('loadURL').addEventListener('click', () => {
-      webView.loadURL(url.value)
-    })
+    // document.getElementById('loadURL').addEventListener('click', () => {
+    //   webView.loadURL(url.value)
+    // })
 
-    const currentUrl = document.getElementById('currentUrl')
+    // const currentUrl = document.getElementById('currentUrl')
 
-    webView.addEventListener('did-navigate', (e) => {
-      currentUrl.innerHTML = e.url
-    })
+    // webView.addEventListener('did-navigate', (e) => {
+    //   currentUrl.innerHTML = e.url
+    // })
   </script>
 </body>
 

@@ -6,6 +6,8 @@ const { ipcRenderer, remote, app } = require('electron')
 
 const dialog = remote.dialog
 
+console.log(process);
+
 // console.log(remote.getGlobal('app_version'))
 
 // dialog.showMessageBox({ message: 'Are you sure you want to quit', buttons: ['Quit', 'Cancel'] }, (buttonIndex) => {

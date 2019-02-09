@@ -10,6 +10,9 @@ let childWindow
 let secWindow
 let altWindow
 
+console.log(process);
+
+
 // GLOBAL ----------------------------------------------------------------------------------
 global['app_version'] = 1.1
 
