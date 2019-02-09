@@ -9,22 +9,24 @@
       height: 100%;
       background-color: red;
     }
-
     a {
       text-decoration: underline;
       cursor: pointer;
+    }
+    webview {
+      height: 100px;
+      border: 1px solid black
     }
   </style>
 </head>
 
 <body>
   
-  <img src="htpp://placehold.it/200x150" alt=""/>
+  <img src="http://placehold.it/200x150" alt=""/>
   <hr>
   <button id="zoom_up">Increase Zoom</button>
   <button id="zoom_down">Decrease Zoom</button>
   <button id="zoom_reset">Reset Zoom</button>
-
 
   <br>
 
@@ -36,6 +38,7 @@
   <h3><a href="http://auth.localhost">HOME</a></h3>
   <h3><a href="https://drive.google.com/uc?export=download&id=0Bw8HgOhf0Mg5bVdOZWVfcE5qb1E">DOWNLOAD HERE!</a></h3>
 
+  <webview src="page1.html"></webview>
   <!-- All of the Node.js APIs are available in this renderer process. -->
   We are using Node.js
   <script>document.write(process.versions.node)</script>,
@@ -44,8 +47,10 @@
   and Electron
   <script>document.write(process.versions.electron)</script>.
 
-  <textarea name="name" rows="8" cols="40"></textarea>
+  <br>
 
+  <textarea id="code" name="name" rows="10" cols="50"></textarea>
+  <button id="run_js">Run Js</button>
 
   <script>
     // You can also require other files to run in this process
@@ -81,10 +86,17 @@
       webFrame.setZoomLevel(--zoom)
     })
 
-    document.getElementById('zoom_down').addEventListener('click', () => {
-      webFrame.setZoomLevel(0)
+    document.getElementById('zoom_reset').addEventListener('click', () => {
+      webFrame.setZoomLevel(zoom = 0)
     })
 
+    document.getElementById('run_js').addEventListener('click', () => {
+      let code = document.getElementById("code").value
+      webFrame.executeJavaScript(code)
+    })
+    console.log(webFrame.getResourceUsage());
+
+    //WEBVIEW ---------------------------------------------------------------------------
   </script>
 </body>
 
