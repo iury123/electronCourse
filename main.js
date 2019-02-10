@@ -12,7 +12,7 @@ let childWindow
 let secWindow
 let altWindow
 
-console.log(process);
+// console.log(process);
 
 
 // GLOBAL ----------------------------------------------------------------------------------

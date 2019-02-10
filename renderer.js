@@ -1,7 +1,8 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-const { ipcRenderer, remote, app, screen, shell } = require('electron')
+const { ipcRenderer, remote, app, nativeImage, shell, clipboard } = require('electron')
+const fs = require('fs')
 const electron = require('electron')
 const dialog = remote.dialog
 
@@ -31,6 +32,8 @@ filebox.ondrop = (e) => {
     return false
 }
 
+let logo = nativeImage.createFromPath('/Users/iurymiguel/Desktop/logo.png')
+fs.writeFile('/Users/iurymiguel/Desktop/logo.jpg', logo.toJPEG(100))
 // shell.openExternal('https://stackacademy.tv')
 
 // console.log(remote.getGlobal('app_version'))
