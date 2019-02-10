@@ -1,6 +1,8 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, session, dialog, globalShortcut,
+const { app, BrowserWindow,
+  session, dialog, globalShortcut,
   Menu, MenuItem, Tray, ipcMain } = require('electron')
+const electron = require('electron')
 const windowStateKeeper = require('electron-window-state')
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -19,7 +21,7 @@ global['app_version'] = 1.1
 // IPC MAIN -------------------------------------------------------------------------------
 
 ipcMain.on('channel1', (event, args) => {
-  console.log('main.js',`${args.name} ${args.surname} arrived at main.js`);
+  console.log('main.js', `${args.name} ${args.surname} arrived at main.js`);
   event.sender.send('channel1', 'Message received on main process')
 })
 
@@ -58,8 +60,8 @@ function createTray() {
   tray.setToolTip('My Electron App')
 
   const trayMenu = Menu.buildFromTemplate([
-    {label: 'Tray Menu Item'},
-    {role: 'quit'}
+    { label: 'Tray Menu Item' },
+    { role: 'quit' }
   ])
 
   // tray.setContextMenu(trayMenu)
@@ -67,7 +69,7 @@ function createTray() {
   tray.on('click', () => {
     mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
     console.log('user clicked on tray');
-    
+
   })
 }
 
@@ -112,18 +114,23 @@ function createWindow() {
 
   // WINDOW STATE KEEPER ------------------------------------------------------------------
 
-  let winState = windowStateKeeper({
-    defaultWidth: 1200,
-    defaultHeight: 800,
-  })
+  // let winState = windowStateKeeper({
+  //   defaultWidth: 1200,
+  //   defaultHeight: 800,
+  // })
+
+  const primaryScreen = electron.screen.getPrimaryDisplay()
 
   mainWindow = new BrowserWindow({
-    width: winState.width,
-    height: winState.height, x: winState.x, y: winState.y,
+    width: primaryScreen.size.width,
+    height: primaryScreen.size.height,
+    x: primaryScreen.bounds.x,
+    y: primaryScreen.bounds.y,
     // webPreferences: { session: appSession }, or
     // webPreferences: { partition: 'partition1' }
   })
-  winState.manage(mainWindow)
+
+  // winState.manage(mainWindow)
 
   mainWindow.webContents.on('context-menu', (e) => {
     e.preventDefault()

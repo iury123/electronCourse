@@ -9,13 +9,30 @@
       height: 100%;
       background-color: red;
     }
+
     a {
       text-decoration: underline;
       cursor: pointer;
     }
+
     webview {
       height: 300px;
       border: 1px solid black
+    }
+    .boxes-div {
+      display: inline-grid;
+    }
+    .box {
+      border: 5px dashed black;
+      padding: 3rem 4rem;
+      float: left;
+      margin-top: 10px;
+    }
+    #filebox {
+      background: green
+    }
+    #trashbox {
+      background: blueviolet
     }
   </style>
 </head>
@@ -31,6 +48,15 @@
   <br>
 
   <h1>Hello World!</h1>
+<div class="boxes-div">
+  <div class="box" id="filebox">
+    <h2>Drop File Here</h2>
+  </div>
+  <div class="box" id="trashbox">
+    <h2>Delete File Here</h2>
+  </div>
+</div>
+  
   <!-- <h3><a onclick="openWin()" target="_blank">Open Google.com</a></h3>
   <h3><a onclick="closeWin()" target="_blank">Close Google.com</a></h3>
   <h3><a onclick="alert_win('An alert initiated by main window')" target="_blank">Alert on Google.com</a></h3> -->
@@ -48,14 +74,14 @@
 
   <br><br><br> -->
 
-  <textarea id="code" name="name" rows="10" cols="50"></textarea>
-  <button id="run_js">Run Js</button>
+  <!-- <textarea id="code" name="name" rows="10" cols="50"></textarea>
+  <button id="run_js">Run Js</button> -->
 
   <script>
     // You can also require other files to run in this process
     require('./renderer.js')
 
-    //Browser window proxies ------------------------------------------------------------------------------
+    //BROWSER WINDOW PROXIES ------------------------------------------------------------------------------
     // let win
 
     // const openWin = () => {

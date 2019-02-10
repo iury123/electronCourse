@@ -1,12 +1,37 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-
-const { ipcRenderer, remote, app } = require('electron')
-
+const { ipcRenderer, remote, app, screen, shell } = require('electron')
+const electron = require('electron')
 const dialog = remote.dialog
 
 console.log(process);
+//Shared API
+console.log(electron.screen.getAllDisplays())
+const filebox = document.getElementById("filebox")
+const trashbox = document.getElementById("trashbox")
+let myfile;
+// nullify the events below.
+filebox.ondragover = filebox.ondragend = filebox.ondragleave = () => {
+    return false
+}
+
+trashbox.ondragover = trashbox.ondragend = trashbox.ondragleave = () => {
+    return false
+}
+
+trashbox.ondrop = (e) => {
+    shell.moveItemToTrash(myfile)
+    return false
+}
+
+filebox.ondrop = (e) => {
+    myfile = e.dataTransfer.files[0].path
+    shell.openItem(myfile)
+    return false
+}
+
+// shell.openExternal('https://stackacademy.tv')
 
 // console.log(remote.getGlobal('app_version'))
 
